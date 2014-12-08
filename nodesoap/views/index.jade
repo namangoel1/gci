@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Weather forecast
+  p Enter a zipcode to get weather data. (Tip: Try out '10001').
+
+  input(type="text" class="zip")
+  button.submit-zip Submit
+
+  .result
+
+  .colophon Built using <a href="http://nodejs.org/">Node JS</a> and <a href="https://github.com/vpulim/node-soap">node-soap</a>. Data from <a href="http://www.service-repository.com/service/overview/1132083200">Service Repository</a>. Made with <span class="heart">♥</span> for Code-In
+
+  script(type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+  script(type="text/javascript" src="javascripts/main.js")
+

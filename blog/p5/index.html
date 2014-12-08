@@ -1,0 +1,198 @@
+<html>
+  <head>
+    <title>p5.js Introduction</title>
+    <link rel="stylesheet" href="../style.css">
+    <meta charset="utf-8" />
+  </head>
+  <body>
+  <h1>Introduction to p5.js</h1>
+
+  <p><a href="http://p5js.org/">p5.js</a> is an easy-to-use JavaScript library that is a 'software sketchbook', letting artists, designers, and hobbyists use the web as a visual development tool. It is inspired by the <a href="https://www.processing.org/">Processing</a> project.</p>
+
+  <h2>Getting Started</h2>
+
+  <p>Create a <code>index.html</code> file on your computer with some skeleton code:</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;p5.js&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+  <p>Just before the <code>&lt;/body&gt;</code>, create two <code>&lt;script&gt;</code> tags linking to the p5 library and your local JavaScript file.</p>
+
+<pre><code>&lt;body&gt;
+&lt;script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.12/p5.min.js" /&gt;
+&lt;script type="text/javascript" src="scripts.js" /&gt;
+&lt;/body&gt;
+</code></pre>
+
+  <p>Create the file <code>scripts.js</code> in the same folder as your <code>index.html</code> file. Place the following starter code in <code>scripts.js</code> (taken from <a href="http://p5js.org/get-started/">p5</a>)</p>
+
+<pre><code>function setup() {
+
+}
+
+function draw() {
+  ellipse(50, 50, 80, 80);
+}
+</code></pre>
+
+  <p>Open <code>index.html</code> with a modern browser such as Chrome or Firefox. You should see a circle on your browser.</p>
+
+  <p>You'll see something like the following:</p>
+  <div id="ex1"></div>
+
+
+  <h2>Multiple instances in one page</h2>
+  <p>Often it is needed to 'embed' examples in a HTML document (such as this page does). To do that, p5 allows creation of a <em>namespace</em>.</p>
+  <p>A namespace works by creating a namespaced function that takes a single argument. Create a new variable that makes a new instance of <code>p5</code>. The instance takes two variables, the first being the namespaced function, the second being the ID of the HTML container you want the sketch rendered in.</p>
+<pre><code>var namespace = function( sketch ) {
+...
+}
+
+var p5Instance = new p5(namespace, 'containerID');
+</code></pre>
+
+  <p>I have been using this method to create the above circle like this:</p>
+<pre><code>&lt;div id="ex1"&gt;&lt;/div&gt;</code></pre>
+<pre><code>var ex1 = function( s ) {
+}
+
+var one = new p5(ex1, 'ex1');
+</code></pre>
+  <p>Which renders the canvas inside <code>&lt;div id="ex1"&gt;&lt;/div&gt;</code>. I've used <code>s</code> instead of <code>sketch</code> because it is shorter to repeat.</p>
+
+  <p>Inside the namespaced function, you can use all p5 methods, functions, and variables normally&mdash;they just have to be accessed through the argument that the instance passes (in my case, <code>s</code>).</p>
+
+<pre><code>var ex1 = function( s ) {
+  
+  var someVariable = 42;
+
+  function helper() {
+    console.log('I aid in sketching');
+  }
+
+  s.setup = function() {
+    ...
+  }
+
+  s.draw = function() {
+    ...
+  }
+}
+
+var one = new p5(ex1, 'ex1');
+</code></pre>
+
+  <p>The syntax is a bit different from p5's regular syntax, it seems more <em>object-like</em>. This is because we're using a namespaced function now, rather than exposing everything to the global scope. Variables and functions can be declared normally, but to use p5's method, they need to follow the above syntax.</p>
+
+  <p>Inside the <code>s.setup()</code> and <code>s.draw()</code> blocks, you again need to use the <code>s</code> object to refer to p5 methods such as <code>ellipse()</code> or <code>fill()</code>. </p>
+
+  <p>The complete code for making the ellipse above is as follows: </p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;&lt;title&gt;p5&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  ...
+  &lt;div id="ex1"&gt;&lt;/div&gt;
+  ...
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<pre><code>var ex1 = function( s ) {
+  s.setup = function() {
+  }
+
+  s.draw = function() {
+    s.ellipse(50, 50, 80, 80);
+  }
+}
+
+var one = new p5(ex1, 'ex1');
+</code></pre>
+
+  <h2>My experience</h2>
+  <p>p5.js turned out to be extremely easy to use with an intuitive syntax. It wasn't difficult to pick the library and get going with p5. It scaled well, and allowed expansive and complicated designs while keeping the syntax simple.</p>
+
+  <p>I've created a simple drawing through p5 that shows a star that follow's the user's mouse:</p>
+  <div id="ex2"></div>
+
+  <p>Complete code of the above drawing is below (Note: it uses a namespaced function as explained above).</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;&lt;title&gt;p5&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  ...
+  &lt;div id="ex2"&gt;&lt;/div&gt;
+  ...
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<pre><code>var ex2 = function( s ) {
+
+  var opacity = 200;
+  var step = 3;
+  var round = 0;
+  // Opacity, step, and round are used to 
+  // make the star blink
+
+  s.setup = function() {
+    s.createCanvas(640, 480);
+  }
+
+  s.draw = function() {
+    s.stroke(0, 0, 0, 0);
+    s.background(30, 144, 255);
+
+    // Increases/decreases opacity 
+    // appropriately
+    if ( round % 2 == 0 )
+      opacity += step;
+    else 
+      opacity -= step;
+    if ( opacity >= 255 || opacity <= 200 )
+      round++;
+
+    s.fill(255, opacity); // Change fill through (rgb, a)
+
+    star(s.mouseX, s.mouseY); // Follow the mouse
+  }
+
+  function star(x, y) {
+    // Modified p5 code to create
+    // a 5-pointed star
+
+    s.translate(x, y); // Sets origin to center of the star
+    s.rotate(s.frameCount / 200); // Rotates the star 
+
+    var angle = (Math.PI * 2) / 5;
+    var halfAngle = angle/2.0;
+    s.beginShape();
+    for (var a = 0; a < Math.PI * 2; a += angle) {
+      var sx = s.cos(a) * 50;
+      var sy = s.sin(a) * 50;
+      s.vertex(sx, sy);
+      sx = s.cos(a+halfAngle) * 30;
+      sy = s.sin(a+halfAngle) * 30;
+      s.vertex(sx, sy);
+    }
+    s.endShape(s.CLOSE);
+  }
+}
+
+var ex2 = new p5(ex2, 'ex2');
+</code></pre>
+
+<p>Made with <span class="heart">♥</span> for Code-In</p>
+
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.3.12/p5.min.js"></script>
+  <script type="text/javascript" src="scripts.js"></script>
+  </body>
+</html>
