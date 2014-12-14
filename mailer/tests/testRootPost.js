@@ -3,7 +3,7 @@ var routes = require('../routes/index');
 var mocha = require('mocha');
 
 describe('/ request (post)', function(){
-  this.timeout(100000);
+  this.timeout(20000);
   it('should return successfully', function(done){
     var testRequest = {};
 
@@ -16,14 +16,17 @@ describe('/ request (post)', function(){
     testRequest.flash = sinon.spy();
 
     testResponse = {
-      render: sinon.spy() //can fill this with spies to test
+      render: sinon.spy()
     }; 
 
     routes.rootPost(testRequest, testResponse);
 
-    console.log( testRequest.flash.args  );
 
-    if ( testResponse.render.called || testRequest.flash.called )
-      done();
+    setTimeout(function() {
+      if ( testResponse.render.calledOnce ) {
+        console.log( '    ', testRequest.flash.args[0][1] )
+        done();
+      }
+    }, 15000)
   });
 });
