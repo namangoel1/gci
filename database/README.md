@@ -3,6 +3,7 @@ A simple node app that saves basic student info to a mongodb database. [Task](ht
 
 ## Set up
 
+* `npm install`
 * Run `mongo` somewhere
 * `mongod --dbpath data` 
 * `node ./bin/www`
