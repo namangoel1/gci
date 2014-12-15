@@ -1,0 +1,11 @@
+{
+  "name": "jsonvalidator",
+  "version": "1.0.0",
+  "description": "Inputs a schema and a json file and checks validity",
+  "main": "index.js",
+  "author": "Namanyay Goel",
+  "license": "ISC",
+  "dependencies": {
+    "jsonschema": "^1.0.0"
+  }
+}
