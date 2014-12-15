@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method="POST" action="/")
+    input(type="name" name="name" placeholder="Student Name")
+    input(type="email" name="email" placeholder="Email")
+    input(type="number" name="age" placeholder="Age")
+    input(type="name" name="country" placeholder="Country of Origin")
+    input(type="tel" name="phone" placeholder="Phone (with country prefix)")
+    textarea(name="bio" placeholder="About Me")
+    .message= message
+    button Submit
