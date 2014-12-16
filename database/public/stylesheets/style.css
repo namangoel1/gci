@@ -2,7 +2,7 @@ body {
   padding: 0;
   margin: 0 auto;
   max-width: 90%;
-  width: 40em;
+  width: 60em;
   font-size: 100%;
 }
 textarea,
@@ -24,7 +24,7 @@ h2 {
   text-align: center;
 }
 form {
-  margin: 3em 0;
+  margin: 3em 5em;
 }
 textarea,
 select,
@@ -53,4 +53,14 @@ textarea {
   font-style: italic;
   color: #666;
   text-align: center;
+}
+table {
+  margin: 3em -10%;
+  width: 120%;
+  border-collapse: collapse;
+}
+td,
+th {
+  padding: 1em;
+  border: thin solid #eee;
 }

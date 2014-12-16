@@ -50,8 +50,8 @@ router.get('/list', function(req, res) {
   Entry.find(function( err, submissions ) {
     if ( err ) return console.error(err);
     console.log( submissions );
+    res.render('list', { title: 'GCI Student List', submissions: submissions })
   });
-  res.redirect('/')
 });
 
 module.exports = router;

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+
+  table
+    tr
+      th Name
+      th Email
+      th Age
+      th Country
+      th Phone
+      th About
+    
+    - for ( var i = 0; i < submissions.length; i++ ) 
+      tr
+        td= submissions[i].name  
+        td= submissions[i].email  
+        td= submissions[i].age 
+        td= submissions[i].country  
+        td= submissions[i].phone
+        td= submissions[i].bio 
