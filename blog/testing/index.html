@@ -6,26 +6,26 @@
   </head>
   <body>
 
-    <h1>Mocking, Spying, and Stubbing</h1>
+<h1>Mocking, Spying, and Stubbing</h1>
 
-    <p>In test-driven development (TDD), mocking, spying, and stubbing are three important methods. Mocking allows checking functions without dependencies, increasing speed and reducing chances of error; spying allows to check the 'indirect output' of code; stubbing allows to simulate functions to reduce their complexity and increase speed for testing.</p>
+<p>In test-driven development (TDD), mocking, spying, and stubbing are three important methods. Mocking allows checking functions without dependencies, increasing speed and reducing chances of error; spying allows to check the 'indirect output' of code; stubbing allows to simulate functions to reduce their complexity and increase speed for testing.</p>
 
-    <p>In the post, I'll be talking about testing through <a href="http://mochajs.org/">Mocha</a> and <a href="http://sinonjs.org/">Sinon.JS</a>, both based on Node JS.</p>
+<p>In the post, I'll be talking about testing through <a href="http://mochajs.org/">Mocha</a> and <a href="http://sinonjs.org/">Sinon.JS</a>, both based on Node JS.</p>
 
-    <h2>The mailer</h2>
+<h2>The mailer</h2>
 
-    <p>In this post we'll be discussing on running tests on a mailer function. This takes two arguments, <code>req</code> (request), and <code>res</code> (response). The function looks like this: </p>
+<p>In this post we'll be discussing on running tests on a mailer function. This takes two arguments, <code>req</code> (request), and <code>res</code> (response). The function looks like this: </p>
 
-    <pre><code>function rootPost(req, res) {
-      var email =  {
+<pre><code>function rootPost(req, res) {
+    var email =  {
         from: 'Fossasia &lt;fossasia@fossasia.com&gt;',
         to: req.body.to,
         subject: req.body.subject, 
         text: req.body.message,
-      };
+    };
 
 
-      mailer.send(email, function(error, info){
+    mailer.send(email, function(error, info) {
 
         if ( error ) {
             req.flash('info', error);
@@ -33,58 +33,108 @@
             req.flash('info', 'Email sent sucessfully!');
         }
 
-
         res.render('index', { flash: req.flash('info') });
-      });
-    }
-    </code></pre>
+    });
+}
+</code></pre>
 
-    <p><code>req.body</code> contains all information of the email (subject, message, etc). </p>
+<p><code>req.body</code> contains all information of the email (subject, message, etc). </p>
 
-    <p>The inner <code>mailer</code> function is what actually sends the email. It calls many dependencies, and we'll have to mock it for efficient testing. </p>
+<p>The inner <code>mailer</code> function is what actually sends the email. It calls many dependencies, and we'll have to mock it for efficient testing. </p>
 
-    <p><code>req.flash()</code> gives useful information on if the mailer is sent or not. We'll need to spy on this method.</p>
+<p><code>req.flash()</code> gives useful information on if the mailer is sent or not. We'll need to spy on this method.</p>
 
-    <p>The function can be considered finished when it finally runs <code>res.render(...)</code>. We'll need to mock <code>res.render()</code> to check for that.</p>
+<p>The function can be considered finished when it finally runs <code>res.render(...)</code>. We'll need to mock <code>res.render()</code> to check for that.</p>
 
-    <h2>Supplying arguments</h2>
+<h2>Supplying arguments</h2>
 
-    <p>The basic structure of our test will be as follows:</p>
+<p>The basic structure of our test will be as follows:</p>
 
-    <pre><code>var testRequest = {};
+<pre><code>var testRequest = {};
 
-    testRequest.body =  {
-      to: 'mail@namanyayg.com',
-      subject: 'Test', 
-      message: 'Test',
-    };
+testRequest.body =  {
+    to: 'mail@namanyayg.com',
+    subject: 'Test', 
+    message: 'Test',
+};
 
-    ...    
+...    
 
-    testResponse = {
-      render: function() {
+testResponse = {
+    render: function() {
         ...
-      }
-    }; 
+    }
+}; 
 
-    routes.rootPost(testRequest, testResponse); 
-    // This is the rootPost function as above
-    </code></pre>
+routes.rootPost(testRequest, testResponse); 
+// This is the rootPost function as above
+</code></pre>
 
-    <p>We'll be supplying <code>testRequest</code> and <code>testResponse</code> to the rootPost function. <code>testRequest.body</code> be an object with the email's info. </p>
+<p>We'll be supplying <code>testRequest</code> and <code>testResponse</code> to the rootPost function. <code>testRequest.body</code> be an object with the email's info. </p>
 
-    <h2>Spying</h2>
+<h2>Spying</h2>
 
-    <p>Sinon.JS provides a <code>.spy()</code> method to create a test spy that records some basic information about the function it is spying on, how many times it's called, what arguments it was supplied with, etc. The <code>.spy()</code> method does not modify the function in question.</p>
+<p>Sinon.JS provides a <code>.spy()</code> method to create a test spy that records some basic information about the function it is spying on, how many times it's called, what arguments it was supplied with, etc. The <code>.spy()</code> method does not modify the function in question.</p>
 
-    <p>We'll be spying on an existing method, namely, the <code>req.flash()</code> method. At the end of the test, we'll need to check if the arguments passed to <code>req.flash()</code> contain 'Email Sent Successfully!' or not. If not, the the function has failed and there's some problem in the test.</p>
+<p>We'll be spying on an existing method, namely, the <code>req.flash()</code> method. At the end of the test, we'll need to check if the arguments passed to <code>req.flash()</code> contain 'Email Sent Successfully!' or not. If not, the the function has failed and there's some problem in the test.</p>
 
-    <p>Create a spy is simple - You simply use the <code>sinon.spy()</code> method. Since we need to spy on <code>req.flash()</code>, we'll do this:</p>
+<p>Create a spy is simple - You simply use the <code>sinon.spy()</code> method. Since we need to spy on <code>req.flash()</code>, we'll do this:</p>
 
-    <pre><code>testRequest.flash = sinon.spy();
-    </code></pre>
+<pre><code>testRequest.flash = sinon.spy();
+</code></pre>
 
-    <p>With this one-liner, we'll be able to check if the arguments passed to <code>testRequst.flash()</code> have 'Email sent successfully!' or not.</p>
+<p>With this one-liner, we'll be able to check if the arguments passed to <code>testRequst.flash()</code> have 'Email sent successfully!' or not.</p>
+
+<h2>Mocking and stubbing</h2>
+
+<p>In Sinon, one way to mock a function is to create a stub. A stub is like a glorified spy, it can do everything that a spy can <em>and</em> it is able to modify the function itself.</p>
+
+<p>The syntax to create a stub is:</p>
+
+<pre><code>var stubFoo = sinon.stub(parentObject, 'childFunction', function() {
+    // This holds what parentObject.childFunction() is replaced with
+});
+</code></pre>
+
+<p>We'll be stubbing the <code>mailer.send()</code> function, since we don't want it to <em>actually</em> send an email, but just check if it <em>can</em> send an email and if it has correct parameters. In the mock, we'll check if the arguments we receive match the arguments we supplied, if yes, we'll run the anonymous function that <code>mailer.send()</code> accepts as it's second argument.</p>
+
+<pre><code>var mailerSpy = sinon.stub(mailer, 'send', function(arguments, callback) {
+    // Compares test request body and actual body
+    assert.equal( arguments.to, testRequest.body.to, 'To field does not match' );
+    assert.equal( arguments.subject, testRequest.body.subject, 'Subject does not match' );
+    assert.equal( arguments.text, testRequest.body.message, 'Message body does not match' );
+    console.log('      - Given arguments match used arguments')
+
+    // Runs the function we supply as the second argument in mailer.send();
+    callback();
+
+    return false;
+});
+</code></pre>
+
+<h2>Modifying</h2>
+
+<p>At the end of the callback, <code>res.render()</code> is called. We already have spied on <code>req.flash()</code> and we can check inside <code>res.render()</code>'s mock if it's value matches to 'Email sent successfully!'.</p>
+
+<p>At the start, we supplied <code>testResponse</code> to <code>routers.rootPost()</code> in place of <code>res</code>. Hence, we need to create <code>testResponse.render()</code> in our test to mock <code>res.render()</code>. </p>
+
+<p>We create a new method in <code>testResponse</code>, <code>render</code>. Here we'll output the value of the second argument we found from our <code>testRequest.flash()</code> spy. It will either be an error or 'Email sent successfully'. We will check if it the latter, if so, the test is considered to have passed.</p>
+
+<pre><code>testResponse = {
+    render: function() {
+        console.log( '      -', testRequest.flash.args[0][1] )
+
+        assert.equal(testRequest.flash.args[0][1], 'Email sent sucessfully!')
+        done();
+    }
+};
+</code></pre>
+
+<h2>Wrapping it up</h2>
+
+<p>We run our test through Mocha, and if we seen a green <s>radical sign</s> check mark that means the test passed. We successfully mocked two functions and spied on one. </p>
+
+<p>Made with <span class="heart">♥</span> for Code-In</p>
 
 
   </body>
