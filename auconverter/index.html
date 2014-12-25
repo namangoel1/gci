@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Astronomical Units Converter</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <h1>Astronomical Unit Converter</h1>
+  <p>Type in a unit for autocomplete and convert values</p>
+  
+  <label>
+    <span>Convert</span>
+    <input type="text" class="value" placeholder="Enter a quantity/value">
+  </label>  
+  <label>
+    <span>from</span>
+    <input type="text" class="from" placeholder="Start typing a unit">
+  </label>  
+  <label>
+    <span>to</span>
+    <input type="text" class="to" placeholder="Start typing a unit">
+  </label>
+
+  <div class="result">
+    <span>Result</span>
+    <span class="ans"></span>
+  </div>
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+  <script src="js/typeahead.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
