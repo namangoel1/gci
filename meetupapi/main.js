@@ -64,7 +64,7 @@ var meetup = function() {
 }
 
 
-var results = meetup().getEvent('/2/open_events', {
+meetup().getEvent('/2/open_events', {
   topic: 'photo',
   city: 'nyc'
 }, function(results) {
