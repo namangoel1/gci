@@ -9,10 +9,10 @@ var meetup = function() {
     return root + '?' + JSON.stringify(object).replace(/":"/g, '=').replace(/","/g, '&').slice(2, -2)
   }
 
-  var getEvent = function(path, params, callback) {
+  var getEvent = function(params, callback) {
     params.key = key;
 
-    request.get(composeURL(url + path, params), function(err, res, body) {
+    request.get(composeURL(url + '/2/open_events', params), function(err, res, body) {
       if ( err ) {
         console.error(err);
         return false;
@@ -20,6 +20,23 @@ var meetup = function() {
 
 
       callback(JSON.parse(body)['results']);
+    })
+  }
+
+
+  var postEvent = function(details, callback) {
+    details.key = key;
+
+    /*if ( !details.group_id || !details.group_urlname || !details.name ) {
+      console.error('The group_id, group_urlname, and name fields are mandatory.')
+    }*/
+
+    request.post({
+      headers: { 'content-type' : 'application/x-www-form-urlencoded' },
+      url: url + '/2/event',
+      form: details
+    }, function(err, res, body) {
+      callback(body);
     })
   }
 
@@ -52,6 +69,7 @@ var meetup = function() {
   };
 
   var parseEvents = function(results) {
+    console.log('a');
     for ( var i = 0; i < results.length; i++ ) {
       console.log( parseEvent(results[i]) );
     }
@@ -59,15 +77,25 @@ var meetup = function() {
 
   return {
     getEvent: getEvent,
-    parseEvents: parseEvents
+    parseEvents: parseEvents,
+    postEvent: postEvent
   }
 }
 
 
-meetup().getEvent('/2/open_events', {
+
+meetup().getEvent({
   topic: 'photo',
   city: 'nyc'
 }, function(results) {
   meetup().parseEvents(results);
 });
 
+
+meetup().postEvent({
+  // group_id: 1,
+  // group_urlname,
+  name: 'Tomato'
+}, function(result) {
+  console.log(result);
+})
