@@ -9,10 +9,10 @@ var meetup = function() {
     return root + '?' + JSON.stringify(object).replace(/":"/g, '=').replace(/","/g, '&').slice(2, -2)
   }
 
-  var getEvent = function(params, callback) {
+  var getEvent = function(params, callback, path) {
     params.key = key;
 
-    request.get(composeURL(url + '/2/open_events', params), function(err, res, body) {
+    request.get(composeURL(url + (path || '/2/open_events'), params), function(err, res, body) {
       if ( err ) {
         console.error(err);
         return false;
@@ -93,8 +93,8 @@ meetup().getEvent({
 
 
 meetup().postEvent({
-  // group_id: 1,
-  // group_urlname,
+  group_id: 7866322,
+  group_urlname: 'TechGrind',
   name: 'Tomato'
 }, function(result) {
   console.log(result);
