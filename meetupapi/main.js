@@ -92,10 +92,29 @@ meetup().getEvent({
 });
 
 
+/*
+ * Getting group ID and group urlname
+ *
+ * The URL name is simply the part after meetup.com/ on a meetup group.
+ * Example, ID of meetup.com/foodie-programmers is 'foodie-programmers'.
+ *
+ * Running the code below with the group name will give the group ID, an integer.
+
+meetup().getEvent({
+  'group_urlname': 'foodie-programmers'
+}, function(group) {
+  console.log(group.id);
+}, '/2/groups');
+
+ * Using the above group_id and the group_urlname manually, 
+ * you can post events to a group with the below code
+*/
+
+
 meetup().postEvent({
-  group_id: 7866322,
-  group_urlname: 'TechGrind',
-  name: 'Tomato'
+  group_id: 42, // Group ID goes here
+  group_urlname: 'foodie-programmers',
+  name: 'Tomato Python Fest'
 }, function(result) {
   console.log(result);
 })
