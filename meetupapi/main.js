@@ -27,10 +27,6 @@ var meetup = function() {
   var postEvent = function(details, callback) {
     details.key = key;
 
-    /*if ( !details.group_id || !details.group_urlname || !details.name ) {
-      console.error('The group_id, group_urlname, and name fields are mandatory.')
-    }*/
-
     request.post({
       headers: { 'content-type' : 'application/x-www-form-urlencoded' },
       url: url + '/2/event',
@@ -112,9 +108,17 @@ meetup().getEvent({
 
 
 meetup().postEvent({
+  // See http://www.meetup.com/meetup_api/docs/2/groups/ for more options
   group_id: 42, // Group ID goes here
   group_urlname: 'foodie-programmers',
-  name: 'Tomato Python Fest'
+  name: 'Tomato Python Fest',
+  description: 'Code vegetables in Python! Special speech by Guido Van Ossum',
+  duration: 1000 * 60 * 60 * 2, // Duration in milliseconds
+  time: 1419879086343, // Milliseconds since epoch
+  why: 'We should do this because... Less than 250 characters',
+  hosts: 'up to 5 comma separated member ids',
+  venue_id: 'Numeric ID of venue',
+  simple_html_description: 'Event description in <b>simple html</b>. Less than <i>50000</i> characters.'
 }, function(result) {
   console.log(result);
 })
