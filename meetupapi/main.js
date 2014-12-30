@@ -118,6 +118,8 @@ meetup().postEvent({
   why: 'We should do this because... Less than 250 characters',
   hosts: 'up to 5 comma separated member ids',
   venue_id: 'Numeric ID of venue',
+  lat: 'Latitude',
+  lon: 'Longitude'
   simple_html_description: 'Event description in <b>simple html</b>. Less than <i>50000</i> characters.'
 }, function(result) {
   console.log(result);
