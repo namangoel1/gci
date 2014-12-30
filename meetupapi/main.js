@@ -121,7 +121,7 @@ meetup().post({
 }, function(venue) {
   console.log('Venue: ', venue, venue.id); 
   // Prints a venue ID that can be used to create a event
-}, '/' + '{{ foodie-programmers }}' + '/venus'); 
+}, '/' + '{{ foodie-programmers }}' + '/venues'); 
 // This needs a valid urlname for the group
 
 
