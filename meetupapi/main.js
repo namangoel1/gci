@@ -9,7 +9,7 @@ var meetup = function() {
     return root + '?' + JSON.stringify(object).replace(/":"/g, '=').replace(/","/g, '&').slice(2, -2)
   }
 
-  var getEvent = function(params, callback, path) {
+  var get = function(params, callback, path) {
     params.key = key;
 
     request.get(composeURL(url + (path || '/2/open_events'), params), function(err, res, body) {
@@ -24,12 +24,12 @@ var meetup = function() {
   }
 
 
-  var postEvent = function(details, callback) {
+  var post = function(details, callback, path) {
     details.key = key;
 
     request.post({
       headers: { 'content-type' : 'application/x-www-form-urlencoded' },
-      url: url + '/2/event',
+      url: url + (path || '/2/event'),
       form: details
     }, function(err, res, body) {
       callback(body);
@@ -37,6 +37,10 @@ var meetup = function() {
   }
 
   var parseEvent = function(mEvent) {
+    /*
+     * A simple function that converts JSON to 
+     * string in a pretty way
+    **/
     var name = mEvent['name'] || '';
     var desc = mEvent['desc'] || '';
     var url = mEvent['url'] || '';
@@ -72,15 +76,16 @@ var meetup = function() {
   }
 
   return {
-    getEvent: getEvent,
+    get: get,
     parseEvents: parseEvents,
-    postEvent: postEvent
+    post: post
   }
 }
 
 
 
-meetup().getEvent({
+meetup().get({
+  // More Info: http://www.meetup.com/meetup_api/docs/2/open_events/
   topic: 'photo',
   city: 'nyc'
 }, function(results) {
@@ -96,7 +101,7 @@ meetup().getEvent({
  *
  * Running the code below with the group name will give the group ID, an integer.
 
-meetup().getEvent({
+meetup().get({
   'group_urlname': 'foodie-programmers'
 }, function(group) {
   console.log(group.id);
@@ -104,11 +109,24 @@ meetup().getEvent({
 
  * Using the above group_id and the group_urlname manually, 
  * you can post events to a group with the below code
-*/
+**/
+
+meetup().post({
+  // More Info: http://www.meetup.com/meetup_api/docs/:urlname/venues/#create
+  name: 'Finding Nemo',
+  address_1: 'p sherman 42 wallaby way sydney',
+  city: 'sydney',
+  country: 'australia',
+  // state: needed if in US or CA.
+}, function(venue) {
+  console.log('Venue: ', venue, venue.id); 
+  // Prints a venue ID that can be used to create a event
+}, '/' + '{{ foodie-programmers }}' + '/venus'); 
+// This needs a valid urlname for the group
 
 
-meetup().postEvent({
-  // See http://www.meetup.com/meetup_api/docs/2/groups/ for more options
+meetup().post({
+  // More Info: http://www.meetup.com/meetup_api/docs/2/groups/
   group_id: 42, // Group ID goes here
   group_urlname: 'foodie-programmers',
   name: 'Tomato Python Fest',
@@ -117,10 +135,10 @@ meetup().postEvent({
   time: 1419879086343, // Milliseconds since epoch
   why: 'We should do this because... Less than 250 characters',
   hosts: 'up to 5 comma separated member ids',
-  venue_id: 'Numeric ID of venue',
-  lat: 'Latitude',
-  lon: 'Longitude'
+  venue_id: 42, // Integer, ID of venue. Venue can be created with the above.
+  lat: 42, // Latitude, Integer
+  lon: 42, // Longitude, Integer
   simple_html_description: 'Event description in <b>simple html</b>. Less than <i>50000</i> characters.'
 }, function(result) {
-  console.log(result);
+  console.log('Event: ', result);
 })
