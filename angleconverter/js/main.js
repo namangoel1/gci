@@ -1,23 +1,19 @@
 $(function() {
 
   var conversion = {
-    'kilometer': 1000,
-    'mile': 1609.34,
-    'astronomical unit': 149597870700,
-    'meter': 1,
-    'light year': 9460528400000000,
-    'light second': 299792458,
-    'parsec': 30856775800000000
+    'degree': 1,
+    'arcminute': 1/60,
+    'arcsecond': 1/3600,
+    'radian': 180/Math.PI,
+    'full circle': 1/360
   }
 
   var units = [
-    'kilometer',
-    'mile',
-    'astronomical unit',
-    'meter',
-    'light year',
-    'light second',
-    'parsec'
+    'degree',
+    'arcminute',
+    'arcsecond',
+    'radian',
+    'full circle'
   ]
 
   var units = new Bloodhound({
