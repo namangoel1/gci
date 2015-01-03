@@ -16,7 +16,15 @@
 
 <p>We've begun to use Jekyll for <a href="http://fossasia.org/">FOSSASIA's</a> <a href="http://www.google-melange.com/gci/homepage/google/gci2014">Google Code-in</a> <a href="http://fossasia.github.io/">site</a>. This tutorial was because of a <a href="http://www.google-melange.com/gci/task/view/google/gci2014/5870997106327552">task on GCI</a>. </p>
 
-<p>Jekyll is useful for sites hosted on Github because it allows using Coffeescript and SASS. You get to separate out the data from the templating by using <a href="http://jekyllrb.com/docs/datafiles/">Jekyll Data Files</a>. You can use <a href="http://jekyllrb.com/docs/variables/">Variables</a> and <a href="http://jekyllrb.com/docs/frontmatter/">YAML Front Matter</a> for more advanced templating and customization. </p>
+<p>Jekyll is useful for sites hosted on Github because it allows using Coffeescript and SASS. You get to separate out the data from the template by using <a href="http://jekyllrb.com/docs/datafiles/">Jekyll Data Files</a>. You can use <a href="http://jekyllrb.com/docs/variables/">Variables</a> and <a href="http://jekyllrb.com/docs/frontmatter/">YAML Front Matter</a> for more advance customization. </p>
+
+<p>In our case, we primarily used Jekyll to separate logic from data by using Data Files, and to use SASS for better stylesheets. FOSSASIA's GCI site allows students to add their own information and photos. Previously, students would have to copy-paste a section of HTML code and make changes in the HTML to get themselves to appear on the site. This was difficult for inexperienced students and often led to problems in code, like syntax errors and uneven indenting - all very confusing to maintain. Adding a new student's info almost always resulted in a merge conflict, and all merges had to be done manually.</p>
+
+<p>The new version with jekyll has a <code>students.json</code> file in it's <code>_data</code> directory. The file is an array of objects, one for each student. A student can add information like their social media links, their photo, and their image simply by editing this JSON file. For social media profiles, they simply need to enter their username, not the whole URL - the template handles the rest.</p>
+
+<p>The template code is now separate and is run by nested loops using Liquid. This ensure perfect uniformity and making changes are easier. For example, if we want to change the animation style, it is simply one change instead of changing every occurrence. </p>
+
+<p>Using SCSS allows the site to run SCSS-lint, which ensures that the CSS written is uniform and free of errors. Variables and nesting by SCSS is also useful in the website's design.</p>
 
 <h2>Setting Up</h2>
 
@@ -33,6 +41,7 @@
 <p>Running <code>bundle exec jekyll serve</code> in the repo's directory will compile and run your site <em>exactly</em> how Github would compile and run it. You'll be able to see the site on your computer by visiting <code>localhost:4000</code>. Congrats!</p>
 
 <p><img src="images/fossasia.png" alt="FOSSASIA" /></p>
+
 
 
 <p>Made with <span class="heart">♥</span> for Code-In</p>

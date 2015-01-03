@@ -8,7 +8,16 @@ However, for testing and development, it is a wise idea to have Jekyll running o
 
 We've begun to use Jekyll for [FOSSASIA's](http://fossasia.org/) [Google Code-in](http://www.google-melange.com/gci/homepage/google/gci2014) [site](http://fossasia.github.io/). This tutorial was because of a [task on GCI](http://www.google-melange.com/gci/task/view/google/gci2014/5870997106327552). 
 
-Jekyll is useful for sites hosted on Github because it allows using Coffeescript and SASS. You get to separate out the data from the templating by using [Jekyll Data Files](http://jekyllrb.com/docs/datafiles/). You can use [Variables](http://jekyllrb.com/docs/variables/) and [YAML Front Matter](http://jekyllrb.com/docs/frontmatter/) for more advanced templating and customization. 
+Jekyll is useful for sites hosted on Github because it allows using Coffeescript and SASS. You get to separate out the data from the template by using [Jekyll Data Files](http://jekyllrb.com/docs/datafiles/). You can use [Variables](http://jekyllrb.com/docs/variables/) and [YAML Front Matter](http://jekyllrb.com/docs/frontmatter/) for more advance customization. 
+
+In our case, we primarily used Jekyll to separate logic from data by using Data Files, and to use SASS for better stylesheets. FOSSASIA's GCI site allows students to add their own information and photos. Previously, students would have to copy-paste a section of HTML code and make changes in the HTML to get themselves to appear on the site. This was difficult for inexperienced students and often led to problems in code, like syntax errors and uneven indenting - all very confusing to maintain. Adding a new student's info almost always resulted in a merge conflict, and all merges had to be done manually.
+
+The new version with jekyll has a `students.json` file in it's `_data` directory. The file is an array of objects, one for each student. A student can add information like their social media links, their photo, and their image simply by editing this JSON file. For social media profiles, they simply need to enter their username, not the whole URL - the template handles the rest.
+
+The template code is now separate and is run by nested loops using Liquid. This ensure perfect uniformity and making changes are easier. For example, if we want to change the animation style, it is simply one change instead of changing every occurrence. 
+
+Using SCSS allows the site to run SCSS-lint, which ensures that the CSS written is uniform and free of errors. Variables and nesting by SCSS is also useful in the website's design.
+
 
 ## Setting Up
 
