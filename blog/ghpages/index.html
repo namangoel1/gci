@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Running jekyll locally for FOSSASIA</title>
+    <link rel="stylesheet" href="../style.css">
+    <meta charset="utf-8" />
+  </head>
+  <body>
+
+<h1>Running jekyll locally for FOSSASIA</h1>
+
+<p><a href="https://pages.github.com/">Github Pages</a> allows one to use <a href="http://jekyllrb.com/">Jekyll</a> on their site. Github compiles everything on their own servers and serves them to visitors.</p>
+
+<p>However, for testing and development, it is a wise idea to have Jekyll running on your local environment. This quick guide will run you through getting jekyll running on your computer.</p>
+
+<h2>Why Jekyll</h2>
+
+<p>We've begun to use Jekyll for <a href="http://fossasia.org/">FOSSASIA's</a> <a href="http://www.google-melange.com/gci/homepage/google/gci2014">Google Code-in</a> <a href="http://fossasia.github.io/">site</a>. This tutorial was because of a <a href="http://www.google-melange.com/gci/task/view/google/gci2014/5870997106327552">task on GCI</a>. </p>
+
+<p>Jekyll is useful for sites hosted on Github because it allows using Coffeescript and SASS. You get to separate out the data from the templating by using <a href="http://jekyllrb.com/docs/datafiles/">Jekyll Data Files</a>. You can use <a href="http://jekyllrb.com/docs/variables/">Variables</a> and <a href="http://jekyllrb.com/docs/frontmatter/">YAML Front Matter</a> for more advanced templating and customization. </p>
+
+<h2>Setting Up</h2>
+
+<p>First, you should have a local copy of the <a href="https://github.com/fossasia/fossasia.github.io">fossasia site</a>. You'll notice a file called 'Gemfile' in the root, this is required for installing and configuring the gem.</p>
+
+<p>You also need <a href="https://www.ruby-lang.org/en/downloads/">Ruby</a> and <a href="http://nodejs.org/download/">Node.JS</a> installed. Windows users can get ruby from <a href="http://rubyinstaller.org/">RubyInstaller</a>.</p>
+
+<p>Next, we'll install Bundler. Bundler is the package manager for Ruby, that will make managing installs of Jekyll and other gems very easy. Install Bundler by running <code>gem install bundler</code> in the command line.</p>
+
+<p>Navigate to the fossasia.github.io folder (where the <code>Gemfile</code> is located) on the command line. Run <code>bundle install</code> to install dependencies for the <a href="https://github.com/github/pages-gem"><code>github-pages</code></a> gem. The pages gem installs many dependencies, which include jekyll, jekyll-coffeescript, jekyll-sass-converter - All very useful for an average development project.See the <a href="https://github.com/github/pages-gem#list-dependency-versions">full list here</a>. We don't exactly use many of these dependencies, but it is important to have all to exactly mimic Github. Apart from that, the pages gem isn't really much different from the normal jekyll gem.</p>
+
+<h2>Running!</h2>
+
+<p>Running <code>bundle exec jekyll serve</code> in the repo's directory will compile and run your site <em>exactly</em> how Github would compile and run it. You'll be able to see the site on your computer by visiting <code>localhost:4000</code>. Congrats!</p>
+
+<p><img src="images/fossasia.png" alt="FOSSASIA" /></p>
+
+
+<p>Made with <span class="heart">♥</span> for Code-In</p>
+
+
+  </body>
+</html>
